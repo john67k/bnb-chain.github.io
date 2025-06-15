@@ -417,7 +417,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../showcase/identity/did/" class="md-tabs__link">
+        <a href="../../../../showcase/mcp/" class="md-tabs__link">
           
   
   
@@ -599,6 +599,8 @@
       
         
           
+        
+      
         
       
         
@@ -992,6 +994,30 @@
       Probabilistic Finality and Economic Finality
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Probabilistic Finality and Economic Finality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#economic-finality-fast-finality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Economic Finality (Fast Finality)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probabilistic-finality-fallback-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probabilistic Finality (Fallback Mechanism)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -2006,6 +2032,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../cross-chain-bridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cross Chain Bridge
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../faq/" class="md-nav__link">
         
   
@@ -2180,6 +2229,8 @@
       
         
       
+        
+      
     
     
     
@@ -2204,7 +2255,7 @@
   
   
   
-    <a href="../../../../showcase/identity/did/" class="md-nav__link">
+    <a href="../../../../showcase/mcp/" class="md-nav__link">
       
   
   
@@ -2325,6 +2376,30 @@
       Probabilistic Finality and Economic Finality
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Probabilistic Finality and Economic Finality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#economic-finality-fast-finality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Economic Finality (Fast Finality)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probabilistic-finality-fallback-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probabilistic Finality (Fallback Mechanism)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -2500,8 +2575,30 @@
 <div><h2 id="finality-api">Finality API<a class="headerlink" href="#finality-api" title="Link to this section">¶</a></h2>
 <p>Finality is a crucial aspect of blockchain security, ensuring that once a block is confirmed, it cannot be reversed or altered. This provides users with the confidence to act on the information in the block without delay.</p>
 <h3 id="probabilistic-finality-and-economic-finality">Probabilistic Finality and Economic Finality<a class="headerlink" href="#probabilistic-finality-and-economic-finality" title="Link to this section">¶</a></h3>
-<p>In probabilistic finality, the deeper a block is buried in the chain, the lower the likelihood of it being reverted. The more blocks follow a particular block, the more likely the chain containing that block will be the longest. <strong>Typically, BSC users should wait for at least 11 or 15 different validators to seal a block. If validators are allowed to produce multiple consecutive blocks, the number of blocks required to achieve probabilistic finality is approximately 11*n or 15*n, where “n” is the number of consecutive blocks produced.</strong></p>
-<p>Economic Finality refers to the high cost associated with reverting a block. In proof-of-stake systems that use a slashing mechanism (such as Casper FFG, Tendermint, or BSC Fast Finality), if validators violate the voting rules, part or all of their stake can be forfeited. This economic penalty makes it extremely expensive to undermine finality. Generally, block n achieves economic finality by block n+2, meaning that BSC Fast Finality reduces the confirmation time to two blocks in most cases. This improves the user experience by making transaction confirmation faster and more reliable.</p>
+<p>BNB Smart Chain (BSC) implements a dual-layer finality mechanism combining Economic Finality and Probabilistic Finality to ensure transaction security and network efficiency.</p>
+<h4 id="economic-finality-fast-finality">Economic Finality (Fast Finality)<a class="headerlink" href="#economic-finality-fast-finality" title="Link to this section">¶</a></h4>
+<p>The Fast Finality feature, introduced through <strong><a href="https://github.com/bnb-chain/BEPs/blob/master/BEPs/BEP126.md">BEP-126</a></strong>, enables Economic Finality using a slashing mechanism similar to Casper FFG and Tendermint. Key characteristics:</p>
+<ul>
+<li>Block n achieves economic finality by block n+2</li>
+<li>Transaction finality time: <strong>~3.75 seconds</strong> (with 1.5 seconds block time)</li>
+<li>Economic penalties make block reversal extremely expensive</li>
+<li>Validators violating voting rules forfeit part of their staked assets</li>
+</ul>
+<p>This significantly improves user experience through faster and more reliable transaction confirmations.</p>
+<h4 id="probabilistic-finality-fallback-mechanism">Probabilistic Finality (Fallback Mechanism)<a class="headerlink" href="#probabilistic-finality-fallback-mechanism" title="Link to this section">¶</a></h4>
+<p>When Fast Finality is unavailable, BSC falls back to Probabilistic Finality. Security increases as more blocks are added - the deeper a block is buried, the lower the probability of reversal.</p>
+<p>Network Parameters:</p>
+<ul>
+<li>TurnLength: 8 (consecutive blocks per validator)</li>
+<li>ValidatorSize: 21 (total active validators)</li>
+<li>Block Time: ~1.5 seconds</li>
+</ul>
+<p>Finality Requirements:</p>
+<ul>
+<li>Majority (&gt;½) validator confirmations: 88 blocks (11 × 8) ≈ 132 seconds</li>
+<li>Supermajority (&gt;⅔) validator confirmations: 120 blocks (15 × 8) ≈ 180 seconds</li>
+</ul>
+<p>This dual-layer approach ensures network security and finality guarantees even when Fast Finality encounters issues.</p>
 <h3 id="economic-finality-api">Economic Finality API<a class="headerlink" href="#economic-finality-api" title="Link to this section">¶</a></h3>
 <h3 id="eth_getheaderbynumber-as-in-the-ethereum-client"><a href="https://www.quicknode.com/docs/kaia/eth_getHeaderByNumber">eth_getHeaderByNumber</a> as in the Ethereum client.<a class="headerlink" href="#eth_getheaderbynumber-as-in-the-ethereum-client" title="Link to this section">¶</a></h3>
 <p><strong>Parameters</strong></p>
